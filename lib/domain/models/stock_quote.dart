@@ -1,3 +1,5 @@
+enum PriceChangeDirection { up, down, flat }
+
 class StockQuote {
   const StockQuote({
     required this.symbol,
@@ -20,6 +22,12 @@ class StockQuote {
   final int countOfListedStock;
 
   int get priceChange => currentPrice - previousClose;
+
+  PriceChangeDirection get direction => switch (priceChange) {
+    > 0 => PriceChangeDirection.up,
+    < 0 => PriceChangeDirection.down,
+    _ => PriceChangeDirection.flat,
+  };
 
   double get changeRate =>
       previousClose == 0 ? 0 : priceChange / previousClose * 100;

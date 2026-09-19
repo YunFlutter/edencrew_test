@@ -35,9 +35,6 @@ class StockRepositoryImpl implements StockRepository {
   @override
   Future<DailyPricePage> getDailyPrices(String symbol, int page) async {
     final dto = await _remoteDataSource.getDailyPrices(symbol, page);
-    return DailyPricePage(
-      items: dto.items.map(StockMapper.fromDailyPriceDto).toList(),
-      lastPage: dto.lastPage,
-    );
+    return StockMapper.fromDailyPricePageDto(dto);
   }
 }

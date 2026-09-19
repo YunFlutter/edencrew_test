@@ -8,7 +8,9 @@ import '../dto/stock_metadata_dto.dart';
 
 abstract final class StockMapper {
   static Stock? fromSearchDto(SearchStockDto dto) {
-    if (dto.nationCode != 'KOR' || !RegExp(r'^\d{6}$').hasMatch(dto.symbol)) {
+    if (dto.nationCode != 'KOR' ||
+        dto.category != 'stock' ||
+        !RegExp(r'^\d{6}$').hasMatch(dto.symbol)) {
       return null;
     }
     return Stock.domestic(
@@ -40,4 +42,10 @@ abstract final class StockMapper {
     lowPrice: dto.lowPrice,
     accumulatedTradingVolume: dto.accumulatedTradingVolume,
   );
+
+  static DailyPricePage fromDailyPricePageDto(DailyPricePageDto dto) =>
+      DailyPricePage(
+        items: dto.items.map(fromDailyPriceDto).toList(growable: false),
+        lastPage: dto.lastPage,
+      );
 }
