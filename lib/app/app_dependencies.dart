@@ -1,5 +1,9 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
+
+import '../data/datasources/mock_naver_stock_remote_data_source.dart';
 import '../data/datasources/naver_stock_remote_data_source_impl.dart';
 import '../data/repositories/stock_repository_impl.dart';
 import '../domain/repositories/stock_repository.dart';
@@ -14,6 +18,21 @@ class AppDependencies {
   }) : _httpClient = httpClient;
 
   factory AppDependencies.bootstrap() {
+    const useMockData = bool.fromEnvironment(
+      'USE_MOCK_DATA',
+      defaultValue: kDebugMode,
+    );
+    if (useMockData) {
+      return AppDependencies(
+        favoriteStore: FavoriteStore(),
+        stockRepository: StockRepositoryImpl(
+          remoteDataSource: MockNaverStockRemoteDataSource(
+            assetBundle: rootBundle,
+          ),
+        ),
+      );
+    }
+
     final httpClient = HttpClient();
     final remoteDataSource = NaverStockRemoteDataSourceImpl(
       httpClient: httpClient,

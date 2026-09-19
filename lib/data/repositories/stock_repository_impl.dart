@@ -10,6 +10,8 @@ class StockRepositoryImpl implements StockRepository {
     : _remoteDataSource = remoteDataSource;
 
   final NaverStockRemoteDataSource _remoteDataSource;
+  final Map<String, Future<DailyPricePage>> _dailyPriceRequests =
+      <String, Future<DailyPricePage>>{};
 
   @override
   Future<List<Stock>> searchStocks(String query) async {
@@ -34,6 +36,21 @@ class StockRepositoryImpl implements StockRepository {
 
   @override
   Future<DailyPricePage> getDailyPrices(String symbol, int page) async {
+    final cacheKey = '$symbol:$page';
+    final cachedRequest = _dailyPriceRequests[cacheKey];
+    if (cachedRequest != null) return cachedRequest;
+
+    final request = _fetchDailyPrices(symbol, page);
+    _dailyPriceRequests[cacheKey] = request;
+    try {
+      return await request;
+    } on Object {
+      _dailyPriceRequests.remove(cacheKey);
+      rethrow;
+    }
+  }
+
+  Future<DailyPricePage> _fetchDailyPrices(String symbol, int page) async {
     final dto = await _remoteDataSource.getDailyPrices(symbol, page);
     return StockMapper.fromDailyPricePageDto(dto);
   }
