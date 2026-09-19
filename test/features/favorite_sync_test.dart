@@ -16,7 +16,10 @@ void main() {
       favoriteStore: store,
       stockRepository: repository,
     );
-    final search = SearchViewModel(favoriteStore: store);
+    final search = SearchViewModel(
+      favoriteStore: store,
+      stockRepository: repository,
+    );
     final detail = StockDetailViewModel(stock: stock, favoriteStore: store);
 
     detail.toggleFavorite();

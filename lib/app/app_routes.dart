@@ -20,7 +20,10 @@ abstract final class AppRoutes {
         favoriteStore: dependencies.favoriteStore,
         stockRepository: dependencies.stockRepository,
       ),
-      search => SearchScreen(favoriteStore: dependencies.favoriteStore),
+      search => SearchScreen(
+        favoriteStore: dependencies.favoriteStore,
+        stockRepository: dependencies.stockRepository,
+      ),
       stockDetail when settings.arguments is Stock => StockDetailScreen(
         stock: settings.arguments! as Stock,
         favoriteStore: dependencies.favoriteStore,
