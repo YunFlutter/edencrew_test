@@ -27,6 +27,7 @@ abstract final class AppRoutes {
       stockDetail when settings.arguments is Stock => StockDetailScreen(
         stock: settings.arguments! as Stock,
         favoriteStore: dependencies.favoriteStore,
+        stockRepository: dependencies.stockRepository,
       ),
       _ => WatchlistScreen(
         favoriteStore: dependencies.favoriteStore,

@@ -9,17 +9,23 @@ class FakeStockRepository implements StockRepository {
     List<Stock>? searchResults,
     this.quotesError,
     this.searchError,
+    Map<int, DailyPricePage>? dailyPricePages,
+    this.dailyPricesError,
   }) : quotes = quotes ?? <String, StockQuote>{},
-       searchResults = searchResults ?? <Stock>[];
+       searchResults = searchResults ?? <Stock>[],
+       dailyPricePages = dailyPricePages ?? <int, DailyPricePage>{};
 
   final Map<String, StockQuote> quotes;
   final List<Stock> searchResults;
   Object? quotesError;
   Object? searchError;
+  final Map<int, DailyPricePage> dailyPricePages;
+  Object? dailyPricesError;
   int quoteRequestCount = 0;
   List<String> lastRequestedSymbols = const <String>[];
   int searchRequestCount = 0;
   String? lastSearchQuery;
+  final List<int> requestedDailyPricePages = <int>[];
 
   @override
   Future<Map<String, StockQuote>> getQuotes(List<String> symbols) async {
@@ -36,8 +42,11 @@ class FakeStockRepository implements StockRepository {
   }
 
   @override
-  Future<DailyPricePage> getDailyPrices(String symbol, int page) {
-    throw UnimplementedError();
+  Future<DailyPricePage> getDailyPrices(String symbol, int page) async {
+    requestedDailyPricePages.add(page);
+    if (dailyPricesError case final error?) throw error;
+    return dailyPricePages[page] ??
+        const DailyPricePage(items: <DailyPrice>[], lastPage: 1);
   }
 
   @override

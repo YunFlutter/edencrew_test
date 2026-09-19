@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../app/app_routes.dart';
 import '../../../core/utils/number_formatter.dart';
 import '../../../core/widgets/app_bottom_navigation.dart';
 import '../../../domain/models/stock.dart';
@@ -102,6 +103,9 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                   stock: stock,
                   quote: _viewModel.quoteFor(stock),
                   quoteFailed: state.failedSymbols.contains(stock.symbol),
+                  onTap: () => Navigator.of(
+                    context,
+                  ).pushNamed(AppRoutes.stockDetail, arguments: stock),
                 );
               },
             ),
@@ -237,70 +241,79 @@ class _WatchlistRow extends StatelessWidget {
     required this.stock,
     required this.quote,
     required this.quoteFailed,
+    required this.onTap,
     super.key,
   });
 
   final Stock stock;
   final StockQuote? quote;
   final bool quoteFailed;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      constraints: BoxConstraints(minHeight: context.dimens.rowMinHeight),
-      padding: EdgeInsets.symmetric(
-        horizontal: context.dimens.space4,
-        vertical: context.dimens.space3,
-      ),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: context.colors.borderSubtle,
-            width: context.dimens.borderHairline,
+    return Semantics(
+      button: true,
+      label: '${stock.name}, ${stock.symbol}, ${stock.market}',
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          constraints: BoxConstraints(minHeight: context.dimens.rowMinHeight),
+          padding: EdgeInsets.symmetric(
+            horizontal: context.dimens.space4,
+            vertical: context.dimens.space3,
           ),
-        ),
-      ),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  stock.name,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: context.colors.textPrimary,
-                    fontSize: 15,
-                    height: 20 / 15,
-                    letterSpacing: -0.1,
-                    fontWeight: AppTypography.medium,
-                  ),
-                ),
-                SizedBox(height: context.dimens.space1 / 2),
-                Text(
-                  '${stock.symbol} · ${stock.market}',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: context.colors.textSecondary,
-                    fontSize: 11,
-                    height: 14 / 11,
-                    fontWeight: AppTypography.regular,
-                  ),
-                ),
-              ],
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                color: context.colors.borderSubtle,
+                width: context.dimens.borderHairline,
+              ),
             ),
           ),
-          SizedBox(width: context.dimens.space3),
-          if (quote != null)
-            _QuoteView(quote: quote!)
-          else if (quoteFailed)
-            const _QuoteFailure()
-          else
-            const _QuoteSkeleton(),
-        ],
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      stock.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: context.colors.textPrimary,
+                        fontSize: 15,
+                        height: 20 / 15,
+                        letterSpacing: -0.1,
+                        fontWeight: AppTypography.medium,
+                      ),
+                    ),
+                    SizedBox(height: context.dimens.space1 / 2),
+                    Text(
+                      '${stock.symbol} · ${stock.market}',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: context.colors.textSecondary,
+                        fontSize: 11,
+                        height: 14 / 11,
+                        fontWeight: AppTypography.regular,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: context.dimens.space3),
+              if (quote != null)
+                _QuoteView(quote: quote!)
+              else if (quoteFailed)
+                const _QuoteFailure()
+              else
+                const _QuoteSkeleton(),
+            ],
+          ),
+        ),
       ),
     );
   }

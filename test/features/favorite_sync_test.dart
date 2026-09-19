@@ -20,7 +20,11 @@ void main() {
       favoriteStore: store,
       stockRepository: repository,
     );
-    final detail = StockDetailViewModel(stock: stock, favoriteStore: store);
+    final detail = StockDetailViewModel(
+      stock: stock,
+      favoriteStore: store,
+      stockRepository: repository,
+    );
 
     detail.toggleFavorite();
 
