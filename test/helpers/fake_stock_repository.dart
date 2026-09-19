@@ -4,13 +4,22 @@ import 'package:edencrew_assignment_starter/domain/models/stock_quote.dart';
 import 'package:edencrew_assignment_starter/domain/repositories/stock_repository.dart';
 
 class FakeStockRepository implements StockRepository {
-  FakeStockRepository({Map<String, StockQuote>? quotes, this.quotesError})
-    : quotes = quotes ?? <String, StockQuote>{};
+  FakeStockRepository({
+    Map<String, StockQuote>? quotes,
+    List<Stock>? searchResults,
+    this.quotesError,
+    this.searchError,
+  }) : quotes = quotes ?? <String, StockQuote>{},
+       searchResults = searchResults ?? <Stock>[];
 
   final Map<String, StockQuote> quotes;
+  final List<Stock> searchResults;
   Object? quotesError;
+  Object? searchError;
   int quoteRequestCount = 0;
   List<String> lastRequestedSymbols = const <String>[];
+  int searchRequestCount = 0;
+  String? lastSearchQuery;
 
   @override
   Future<Map<String, StockQuote>> getQuotes(List<String> symbols) async {
@@ -37,7 +46,10 @@ class FakeStockRepository implements StockRepository {
   }
 
   @override
-  Future<List<Stock>> searchStocks(String query) {
-    throw UnimplementedError();
+  Future<List<Stock>> searchStocks(String query) async {
+    searchRequestCount++;
+    lastSearchQuery = query;
+    if (searchError case final error?) throw error;
+    return List<Stock>.unmodifiable(searchResults);
   }
 }
