@@ -1,0 +1,19 @@
+{
+  "query": "mock-catalog",
+  "items": [
+    {"code":"005930","name":"삼성전자","typeCode":"KOSPI","typeName":"코스피","url":"/domestic/stock/005930/total","nationCode":"KOR","category":"stock"},
+    {"code":"000660","name":"SK하이닉스","typeCode":"KOSPI","typeName":"코스피","url":"/domestic/stock/000660/total","nationCode":"KOR","category":"stock"},
+    {"code":"035420","name":"NAVER","typeCode":"KOSPI","typeName":"코스피","url":"/domestic/stock/035420/total","nationCode":"KOR","category":"stock"},
+    {"code":"035720","name":"카카오","typeCode":"KOSPI","typeName":"코스피","url":"/domestic/stock/035720/total","nationCode":"KOR","category":"stock"},
+    {"code":"005380","name":"현대차","typeCode":"KOSPI","typeName":"코스피","url":"/domestic/stock/005380/total","nationCode":"KOR","category":"stock"},
+    {"code":"373220","name":"LG에너지솔루션","typeCode":"KOSPI","typeName":"코스피","url":"/domestic/stock/373220/total","nationCode":"KOR","category":"stock"},
+    {"code":"068270","name":"셀트리온","typeCode":"KOSPI","typeName":"코스피","url":"/domestic/stock/068270/total","nationCode":"KOR","category":"stock"},
+    {"code":"247540","name":"에코프로비엠","typeCode":"KOSDAQ","typeName":"코스닥","url":"/domestic/stock/247540/total","nationCode":"KOR","category":"stock"},
+    {"code":"105560","name":"KB금융","typeCode":"KOSPI","typeName":"코스피","url":"/domestic/stock/105560/total","nationCode":"KOR","category":"stock"},
+    {"code":"012450","name":"한화에어로스페이스","typeCode":"KOSPI","typeName":"코스피","url":"/domestic/stock/012450/total","nationCode":"KOR","category":"stock"},
+    {"code":"009150","name":"삼성전기","typeCode":"KOSPI","typeName":"코스피","url":"/domestic/stock/009150/total","nationCode":"KOR","category":"stock"},
+    {"code":"006400","name":"삼성SDI","typeCode":"KOSPI","typeName":"코스피","url":"/domestic/stock/006400/total","nationCode":"KOR","category":"stock"},
+    {"code":"010140","name":"삼성중공업","typeCode":"KOSPI","typeName":"코스피","url":"/domestic/stock/010140/total","nationCode":"KOR","category":"stock"},
+    {"code":"005935","name":"삼성전자우","typeCode":"KOSPI","typeName":"코스피","url":"/domestic/stock/005935/total","nationCode":"KOR","category":"stock"}
+  ]
+}

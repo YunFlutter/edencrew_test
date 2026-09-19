@@ -9,9 +9,29 @@
 | `realtime_quotes_005930_000660.json` | `query=SERVICE_ITEM:005930,000660` | EUC-KR | 배치 실시간 시세 |
 | `stock_metadata_005930.json` | `symbol=005930` | UTF-8 | 삼성전자 메타데이터 |
 | `daily_prices_005930_page_1_20240424.html` | `code=005930`, `page=1` | EUC-KR | 2024-04-24에 보존된 실제 HTML 응답 |
+| `search_stock_catalog.json` | 개발용 검색 카탈로그 | UTF-8 | 여러 코스피·코스닥 종목 |
 
 일별 시세 endpoint는 2026-09-19 현재 HTTP 410과
 `이 페이지는 더 이상 제공되지 않습니다`를 반환한다. 현재의 종료 안내 페이지는
 일별 시세 파서 fixture로 쓸 수 없어 Internet Archive에 보존된 Naver의
 원본 응답을 저장했다. Wayback 도구 마크업이 삽입되지 않은 원문이며,
 10개 거래일과 `lastPage=698`에 해당하는 맨 뒤 페이지 링크를 포함한다.
+
+## 개발 실행
+
+Debug 빌드는 기본적으로 위 fixture를 사용하는
+`MockNaverStockRemoteDataSource`로 실행한다. 개발용 검색 카탈로그에는 삼성전자,
+SK하이닉스, NAVER, 카카오, 현대차 등 여러 국내 종목이 들어 있으며 종목명 일부 또는
+6자리 종목코드로 검색할 수 있다.
+
+실제 저장 응답에 없는 종목 시세는 종목코드를 seed로 사용해 실행할 때마다 같은 값이
+나오도록 만든다. 보존된 일별 HTML의 거래량 분포를 seed로 사용하되, 날짜와 OHLC는
+페이지 경계에서 이어지는 연속 시계열로 생성한다. 같은 10일 패턴을 페이지마다 반복하지
+않으며 최신 종가는 해당 종목의 mock 현재가와 맞춘다. 이 값은 기간 탭, 차트, 페이지
+캐시를 네트워크 없이 확인하기 위한 개발 전용 값이며 실제 시세로 취급하지 않는다.
+
+실제 Naver endpoint로 확인하려면 아래처럼 mock을 명시적으로 끈다.
+
+```bash
+flutter run --dart-define=USE_MOCK_DATA=false
+```
